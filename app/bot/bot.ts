@@ -5,6 +5,7 @@ import { Point } from "../helper/point";
 
 export class Bot {
   protected playerInfo: Player;
+  goHome = false;
 
   /**
    * Gets called before ExecuteTurn. This is where you get your bot's state.
@@ -24,6 +25,34 @@ export class Bot {
    */
   public executeTurn(map: Map, visiblePlayers: Player[]): string {
     let direction: number = Math.floor(Math.random() * 4) + 1;
+
+    if(this.playerInfo.CarriedResources/this.playerInfo.CarryingCapacity > 0.80){
+      this.goHome = true;
+    }
+    else{
+      this.goHome = false;
+    }
+
+    if(this.goHome){
+      let homePos= this.playerInfo.HouseLocation;
+      let playerPos = this.playerInfo.Position;
+      if(playerPos.x > homePos.x){
+        return AIHelper.createMoveAction(this.right());
+      }
+      if(playerPos.x < homePos.x){
+        return AIHelper.createMoveAction(this.left());
+      }
+      if(playerPos.y > homePos.y){
+        return AIHelper.createMoveAction(this.up());
+      }
+      if(playerPos.y < homePos.y){
+        return AIHelper.createMoveAction(this.down());
+      }
+    }
+    
+    if(this.playerInfo.Health/this.playerInfo.MaxHealth < 0.5){
+      return AIHelper.createHealAction();
+    }
     if(direction === 1){
       // for (let i = 0; i < 4; i++) {
         const position = new Point( 0, -1);
@@ -103,7 +132,7 @@ export class Bot {
       
     }
 
-
+    // if(visiblePlayers.length > 0)
     // Determine what action you want to take.
     // return AIHelper.createMoveAction(new Point(0, 1));
   }
@@ -113,8 +142,40 @@ export class Bot {
    * @returns void
    */
   public afterTurn(): void {
-    // let direction: number = Math.floor(Math.random() * 4) + 1;
 
 
   }
+
+private detectPositionSurroundingEnnemy(players:Player[]){
+  let closestPlayer = players[0];
+  let shortestDistance = Point.distanceSquared(this.playerInfo.Position, closestPlayer.Position);
+  for (const player of players) {
+    if(player.AttackPower > this.playerInfo.AttackPower){
+      return;
+    }
+   const distanceToEnnemy = Point.distanceSquared(this.playerInfo.Position, player.Position);
+    if(distanceToEnnemy < shortestDistance){
+      closestPlayer = player;
+    }
+  }
+  return closestPlayer;
 }
+
+private up(){
+  return new Point(0,-1);
+}
+
+private down(){
+  return new Point(0,1);
+}
+
+private left(){
+  return new Point(1, 0);
+}
+
+private right(){
+  return new Point(-1,0)
+}
+}
+
+
