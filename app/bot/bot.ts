@@ -22,9 +22,10 @@ export class Bot {
    */
   public executeTurn(map: Map, visiblePlayers: Player[]): string {
     let direction: number = Math.floor(Math.random() * 4) + 1;
+    console.log(map.getTileAt(this.playerInfo.Position))
     if(direction === 1){
       // for (let i = 0; i < 4; i++) {
-        const position = new Point( this.playerInfo.Position.x,this.playerInfo.Position.y + 1);
+        const position = new Point( 0, -1);
         let tile = map.getTileAt(position);
         if(tile === TileContent.Lava || tile === TileContent.Wall){
           return AIHelper.createEmptyAction();
@@ -40,7 +41,7 @@ export class Bot {
     }
     if(direction === 2){
       // for (let i = 0; i < 4; i++) {
-        const position = new Point( this.playerInfo.Position.x + 1,this.playerInfo.Position.y );
+        const position = new Point(-1,0 );
         let tile = map.getTileAt(position);
         if(tile === TileContent.Lava || tile === TileContent.Wall){
           return AIHelper.createEmptyAction();
@@ -57,7 +58,7 @@ export class Bot {
 
     if(direction === 3){
       // for (let i = 0; i < 4; i++) {
-        const position = new Point( this.playerInfo.Position.x,this.playerInfo.Position.y - 1);
+        const position = new Point( 0, 1);
         let tile = map.getTileAt(position);
         if(tile === TileContent.Lava || tile === TileContent.Wall){
           return AIHelper.createEmptyAction();
@@ -74,7 +75,7 @@ export class Bot {
 
     if(direction === 4){
       // for (let i = 0; i < 4; i++) {
-        const position = new Point( this.playerInfo.Position.x -1 ,this.playerInfo.Position.y );
+        const position = new Point( 1 , 0 );
         let tile = map.getTileAt(position);
         if(tile === TileContent.Lava || tile === TileContent.Wall){
           return AIHelper.createEmptyAction();
@@ -91,7 +92,7 @@ export class Bot {
 
 
     // Determine what action you want to take.
-    return AIHelper.createMoveAction(new Point(0, 1));
+    // return AIHelper.createMoveAction(new Point(0, 1));
   }
 
   /**
