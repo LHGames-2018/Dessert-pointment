@@ -25,6 +25,7 @@ export class Bot {
    */
   public executeTurn(map: Map, visiblePlayers: Player[]): string {
     let direction: number = Math.floor(Math.random() * 4) + 1;
+    let playerPos = this.playerInfo.Position;
 
     if(this.playerInfo.CarriedResources/this.playerInfo.CarryingCapacity > 0.80){
       this.goHome = true;
@@ -32,10 +33,12 @@ export class Bot {
     else{
       this.goHome = false;
     }
+    if(map.getTileAt(playerPos) === TileContent.House ){
+      this.goHome = false;
+    }
 
     if(this.goHome){
       let homePos= this.playerInfo.HouseLocation;
-      let playerPos = this.playerInfo.Position;
       if(playerPos.x > homePos.x){
         return AIHelper.createMoveAction(this.right());
       }
@@ -72,6 +75,8 @@ export class Bot {
         }
       
     }
+
+
     if(direction === 2){
       // for (let i = 0; i < 4; i++) {
         const position = new Point(-1,0 );
