@@ -13,6 +13,8 @@ export class Bot {
    */
   public beforeTurn(playerInfo: Player): void {
     this.playerInfo = playerInfo;
+    
+
   }
   /**
    * This is where you decide what action to take.
@@ -22,7 +24,6 @@ export class Bot {
    */
   public executeTurn(map: Map, visiblePlayers: Player[]): string {
     let direction: number = Math.floor(Math.random() * 4) + 1;
-    console.log(map.getTileAt(this.playerInfo.Position))
     if(direction === 1){
       // for (let i = 0; i < 4; i++) {
         const position = new Point( 0, -1);
@@ -34,8 +35,11 @@ export class Bot {
           return AIHelper.createCollectAction(position)
 
         }
-        if(tile === TileContent.Empty){
+        if(tile === TileContent.Empty || tile === TileContent.House || tile === TileContent.Shop){
           return AIHelper.createMoveAction(position);
+        }
+        if(tile === TileContent.Player){
+          return AIHelper.createAttackAction(position);
         }
       
     }
@@ -50,8 +54,11 @@ export class Bot {
           return AIHelper.createCollectAction(position)
 
         }
-        if(tile === TileContent.Empty){
+        if(tile === TileContent.Empty || tile === TileContent.House || tile === TileContent.Shop){
           return AIHelper.createMoveAction(position);
+        }
+        if(tile === TileContent.Player){
+          return AIHelper.createAttackAction(position);
         }
       
     }
@@ -67,8 +74,11 @@ export class Bot {
           return AIHelper.createCollectAction(position)
 
         }
-        if(tile === TileContent.Empty){
+        if(tile === TileContent.Empty || tile === TileContent.House || tile === TileContent.Shop){
           return AIHelper.createMoveAction(position);
+        }
+        if(tile === TileContent.Player){
+          return AIHelper.createAttackAction(position);
         }
       
     }
@@ -84,8 +94,11 @@ export class Bot {
           return AIHelper.createCollectAction(position)
 
         }
-        if(tile === TileContent.Empty){
+        if(tile === TileContent.Empty || tile === TileContent.House || tile === TileContent.Shop){
           return AIHelper.createMoveAction(position);
+        }
+        if(tile === TileContent.Player){
+          return AIHelper.createAttackAction(position);
         }
       
     }
