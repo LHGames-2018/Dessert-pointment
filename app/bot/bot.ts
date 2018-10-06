@@ -1,5 +1,5 @@
 import { AIHelper } from "../helper/aiHelper";
-import { Player, TileContent } from "../helper/interfaces";
+import { Player, TileContent, PurchasableItem } from "../helper/interfaces";
 import { Map } from "../helper/map";
 import { Point } from "../helper/point";
 
@@ -38,11 +38,16 @@ export class Bot {
       this.goHome = false;
       this.findR = true;
     }
+    if(this.playerInfo.TotalResources >= 3000){
+      this.goShop = true;
+    }
     if (map.getTileAt(playerPos) === TileContent.House) {
       this.goHome = false;
       this.findR = true;
     }
-
+    if(this.checkAdjacentTile(map, TileContent.Shop)){
+      return AIHelper.createPurchaseAction(PurchasableItem.Sword)
+    }
     if (this.goHome) {
       let homePos = this.playerInfo.HouseLocation;
       if (playerPos.x > homePos.x) {
@@ -232,5 +237,22 @@ export class Bot {
       }
     }
     return closestRsrc;
+  }
+
+  checkAdjacentTile(map:Map, tileWanted: TileContent):Point{
+    let playerPos = this.playerInfo.Position;
+    if(map.getTileAt(new Point (playerPos.x,playerPos.y -1))=== tileWanted){
+      return this.up();
+    }
+    if(map.getTileAt(new Point (playerPos.x,playerPos.y + 1))=== tileWanted){
+      return this.down();
+    }
+    if(map.getTileAt(new Point (playerPos.x + 1,playerPos.y))=== tileWanted){
+      return this.left();
+    }
+    if(map.getTileAt(new Point (playerPos.x -1,playerPos.y))=== tileWanted){
+      return this.right ();
+    }
+    return null
   }
 }
